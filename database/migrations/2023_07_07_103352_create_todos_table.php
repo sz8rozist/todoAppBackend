@@ -17,9 +17,9 @@ class CreateTodosTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->boolean("completed");
-            $table->date('due_date');
-            $table->date('created_at');
+            $table->boolean("completed")->default(0);
+            $table->date('due_date')->default(null);
+            $table->date('created_at')->default(null);
         });
     }
 
