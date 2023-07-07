@@ -37,26 +37,31 @@ class TodoController extends Controller
     }
 
     /**
-     * Visszaadja a megadott teendő részleteit.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
+ * Visszaadja a megadott teendő részleteit.
+ *
+ * @param  int  $id
+ * @return \Illuminate\Http\Response
+ */
+public function show($id)
+{
+    try {
         $todo = Todo::findOrFail($id);
         return response()->json($todo);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'A teendő nem található.'], 404);
     }
+}
 
-    /**
-     * Frissíti a megadott teendő adatait.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
+/**
+ * Frissíti a megadott teendő adatait.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @param  int  $id
+ * @return \Illuminate\Http\Response
+ */
+public function update(Request $request, $id)
+{
+    try {
         $request->validate([
             'title' => 'required|string',
             'description' => 'string',
@@ -66,18 +71,25 @@ class TodoController extends Controller
         $todo = Todo::findOrFail($id);
         $todo->update($request->all());
         return response()->json($todo);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'A teendő nem található.'], 404);
     }
+}
 
-    /**
-     * Törli a megadott teendőt.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
+/**
+ * Törli a megadott teendőt.
+ *
+ * @param  int  $id
+ * @return \Illuminate\Http\Response
+ */
+public function destroy($id)
+{
+    try {
         $todo = Todo::findOrFail($id);
         $todo->delete();
         return response()->json(null, 204);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'A teendő nem található.'], 404);
     }
+}
 }
